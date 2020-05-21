@@ -25,13 +25,13 @@ To better know its capabilities you will use GigaSpaces Admin API for your conve
  * `./build.sh`  
  * `./admin.groovy.sh` 
 
-1.1 The Admin script will test the runtime 6 time (then the scripts exits, also number of times to test can be configured in admin.groovy.sh max_time_to_check flag)
-1.2 Looking for GSC were UsedHeapSize is more than 50MB (can be changed from admin.groovy.sh heap_size_check flag)
-1.3 If such GSC it checks if there are more than one PU instance deployed on that GSC
-1.4 If such GSC is found the script looks for an empty GSC to relocate one of the Pus to.
-1.5 If it founds an empty GSC then the PU first PU instance will be relocated else a new GSC will be started with AdminApiZone in zones & then the first PU instance will be relocated.
-1.6 It is done till each GSC contains only one PU instance
-1.7 Between each check the script sleeps for 20 seconds        
+1.1 The Admin script will test the runtime 6 time (then the scripts exits, also number of times to test can be configured in admin.groovy.sh max_time_to_check flag)<br />
+1.2 Looking for GSC were UsedHeapSize is more than 50MB (can be changed from admin.groovy.sh heap_size_check flag)<br />
+1.3 If such GSC it checks if there are more than one PU instance deployed on that GSC.<br />
+1.4 If such GSC is found the script looks for an empty GSC to relocate one of the Pus to.<br />
+1.5 If it founds an empty GSC then the PU first PU instance will be relocated else a new GSC will be started with AdminApiZone in zones & then the first PU instance will be relocated.<br />
+1.6 It is done till each GSC contains only one PU instance.<br />
+1.7 Between each check the script sleeps for 20 seconds.<br />
 
 ![Screenshot](./Pictures/Picture1.png)
    
@@ -41,8 +41,8 @@ To better know its capabilities you will use GigaSpaces Admin API for your conve
  * `./build.sh`  
  * `./run.sh` 
 
-2.1 Terminate one of the GSC from the webui
-2.2 Watch the alerts in the command console where you activated the groovy script
+2.1 Terminate one of the GSC from the webui.<br />
+2.2 Watch the alerts in the command console where you activated the groovy script.<br />
 
 ![Screenshot](./Pictures/Picture2.png)
 
