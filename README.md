@@ -17,13 +17,18 @@ To better know its capabilities you will use GigaSpaces Admin API for your conve
         
 1.2 Start demo space:
 
-    ./gs.sh demo
+    ./gs.sh host run-agent --auto<br />
+    ./gs.sh container create --memory 50m --count 4 localhost<br />
+    ./gs.sh space deploy --partitions 2 --ha Demo<br />
     
 #### 1 Relocate
-
+ * `export XAPHOMEDIR=XAP_HOME` 
+ * `export heap_size_check=30`  
+ * `export max_time_to_check=6`  
  * `cd Relocate` 
  * `./build.sh`  
  * `./admin.groovy.sh` 
+ * `Write data to space that it's used heap will be more than 30mb (100k record using gs-ui benchmark tool)`
 
 1.1 The Admin script will test the runtime 6 time (then the scripts exits, also number of times to test can be configured in admin.groovy.sh max_time_to_check flag)<br />
 1.2 Looking for GSC were UsedHeapSize is more than 50MB (can be changed from admin.groovy.sh heap_size_check flag)<br />

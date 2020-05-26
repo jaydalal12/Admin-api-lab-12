@@ -1,7 +1,12 @@
 #!/bin/bash
 
 echo "**** Start Create Admin *****"
-export heap_size_check=50
-export max_time_to_check=6
+if [[ -z "${heap_size_check}" ]]; then
+ export heap_size_check=30
+fi
+
+if [[ -z "${max_time_to_check}" ]]; then
+  export max_time_to_check=6
+fi
 
 exec groovy -cp "target/*" admin.groovy

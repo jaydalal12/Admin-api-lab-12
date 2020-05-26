@@ -6,6 +6,8 @@ import org.openspaces.admin.alert.Alert;
 import org.openspaces.admin.alert.AlertManager;
 import org.openspaces.admin.alert.config.parser.XmlAlertConfigurationParser;
 import org.openspaces.admin.alert.events.AlertTriggeredEventListener;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AlertsMonitor {
 
@@ -21,12 +23,13 @@ public class AlertsMonitor {
 
     public void init(String lookupgroup) {
         System.out.println("Creating new Monitor");
+        Map<String, String> environment = new HashMap<String, String>(System.getenv());
         AdminFactory factory = new AdminFactory();
         factory.addGroup(lookupgroup);
         Admin admin = factory.createAdmin();
 
         AlertManager alertManager = admin.getAlertManager();
-        alertManager.configure(new XmlAlertConfigurationParser("/home/jay/work/gigaspace/gigaspaces-insightedge-enterprise-15.2.0/config/alerts/alerts.xml").parse());
+        alertManager.configure(new XmlAlertConfigurationParser(environment.get("XAPHOMEDIR")+"/config/alerts/alerts.xml").parse());
 
         alertManager.getAlertTriggered().add(new AlertTriggeredEventListener() {
 

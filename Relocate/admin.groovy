@@ -35,7 +35,7 @@ while ( times < maxTimeToCheck ) {
 			System.out.println("try to relocate PU instance to release some memory" );
 			containers[cnt].waitFor(1,4,TimeUnit.SECONDS);
 			ProcessingUnitInstance[] puis = containers[cnt].getProcessingUnitInstances();
-			if (puis.length > 1) {
+			if (puis.length >= 1) {
 				extensiveHeapSize=true;
 				relocated=false;
 				System.out.println("These is more than 1 PU in this GSC Look for Another Candidate GSC for relocation of the PU. " + puis.length);			
