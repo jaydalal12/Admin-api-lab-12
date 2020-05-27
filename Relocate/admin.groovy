@@ -27,6 +27,7 @@ while ( times < maxTimeToCheck ) {
 	GridServiceContainer[] containers = gscs.getContainers();
 	boolean extensiveHeapSize=false;
 	boolean relocated=false;
+	
 	for (int cnt=0; cnt < containers.length ; cnt++) {
 		System.out.println("containers " + (cnt+1) + " UID is " + containers[cnt].getUid());
 		double heapSize = containers[cnt].getVirtualMachine().getStatistics().getMemoryHeapUsedInMB();
@@ -38,14 +39,19 @@ while ( times < maxTimeToCheck ) {
 			if (puis.length >= 1) {
 				extensiveHeapSize=true;
 				relocated=false;
-				System.out.println("These is more than 1 PU in this GSC Look for Another Candidate GSC for relocation of the PU. " + puis.length);			
-				for (int lookup=0; lookup < containers.length ; lookup++) {
-					containers[lookup].waitFor(1,4,TimeUnit.SECONDS);
-					ProcessingUnitInstance[] mypuis = containers[lookup].getProcessingUnitInstances();
+				System.out.println("There is "+puis.length+" PU in this GSC Look for Another Candidate GSC for relocation of the PU. ");			GridServiceContainer[] tmpcontainers = gscs.getContainers();
+	
+				for (int lookup=0; lookup < tmpcontainers.length ; lookup++) {
+					tmpcontainers[lookup].waitFor(1,4,TimeUnit.SECONDS);
+					ProcessingUnitInstance[] mypuis = tmpcontainers[lookup].getProcessingUnitInstances();
 					if (mypuis.length == 0) {
-						System.out.println("Found Candidate GSC Container for Relocation. Attempting to Relocate first PU to move it to another GSC" );
-						puis[0].relocate( containers[lookup] );
-						relocated=true;
+						System.out.println("Found Candidate GSC Container for Relocation. Attempting to Relocate first PU to move it to another GSC "+ containers[lookup].getId());
+						puis[0].relocate( tmpcontainers[lookup] );
+						try {
+							containers[cnt].kill();
+						}catch(Exception e){
+						}
+							relocated=true;
 						break;				
 					}
 				}
@@ -57,6 +63,8 @@ while ( times < maxTimeToCheck ) {
 			System.out.println("No Available GSC were found for relocation, start a new one.");
 			GridServiceContainerOptions gscOptions = new GridServiceContainerOptions();
 			gscOptions.vmInputArgument("-Dcom.gs.zones=AdminApiZone");
+			gscOptions.vmInputArgument("-Xmx256m");
+			gscOptions.vmInputArgument("-Xms256m");
 			gsas.startGridService(gscOptions);
 		}
 		extensiveHeapSize=false;

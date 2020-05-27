@@ -6,7 +6,7 @@ if [[ -z "${heap_size_check}" ]]; then
 fi
 
 if [[ -z "${max_time_to_check}" ]]; then
-  export max_time_to_check=6
+  export max_time_to_check=20
 fi
 
 exec groovy -cp "target/*" admin.groovy

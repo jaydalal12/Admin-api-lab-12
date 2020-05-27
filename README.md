@@ -18,7 +18,7 @@ To better know its capabilities you will use GigaSpaces Admin API for your conve
 1.2 Start demo space:
 
     ./gs.sh host run-agent --auto
-    ./gs.sh container create --memory 50m --count 4 localhost
+    ./gs.sh container create --memory 100m --count 4 localhost
     ./gs.sh space deploy --partitions 2 --ha Demo
     
 #### 1 Relocate
