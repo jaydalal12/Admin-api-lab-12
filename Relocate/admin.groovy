@@ -20,6 +20,8 @@ GridServiceContainers gscs = admin.getGridServiceContainers();
 gscs.waitFor(4, 2, TimeUnit.SECONDS) ;
 int numberOfGSCs = gscs.getSize();
 int times=0;
+Set<String> newGscIds = new HashSet<>();
+
 while ( times < maxTimeToCheck ) {
 	times++;
 	System.out.println("******************************************");
@@ -32,11 +34,11 @@ while ( times < maxTimeToCheck ) {
 		System.out.println("containers " + (cnt+1) + " UID is " + containers[cnt].getUid());
 		double heapSize = containers[cnt].getVirtualMachine().getStatistics().getMemoryHeapUsedInMB();
 		System.out.println("Used Heap Size: " + heapSize  );
-		if (heapSize > heapSizecheck ) {
+		if (heapSize > heapSizecheck && !newGscIds.contains(containers[cnt].getId()) ) {
 			System.out.println("try to relocate PU instance to release some memory" );
 			containers[cnt].waitFor(1,4,TimeUnit.SECONDS);
 			ProcessingUnitInstance[] puis = containers[cnt].getProcessingUnitInstances();
-			if (puis.length >= 1) {
+			if (puis.length >= 1)  {
 				extensiveHeapSize=true;
 				relocated=false;
 				System.out.println("There is "+puis.length+" PU in this GSC Look for Another Candidate GSC for relocation of the PU. ");			GridServiceContainer[] tmpcontainers = gscs.getContainers();
@@ -47,8 +49,11 @@ while ( times < maxTimeToCheck ) {
 					if (mypuis.length == 0) {
 						System.out.println("Found Candidate GSC Container for Relocation. Attempting to Relocate first PU to move it to another GSC "+ containers[lookup].getId());
 						puis[0].relocate( tmpcontainers[lookup] );
+						newGscIds.add(containers[lookup].getId());
 						try {
-							containers[cnt].kill();
+							if(!newGscIds.contains(containers[cnt].getId())){
+								containers[cnt].kill();
+							}
 						}catch(Exception e){
 						}
 							relocated=true;
